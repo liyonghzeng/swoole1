@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>聊天室</title>
+</head>
+<style>
+    .div-height{
+        border:1px solid #5a6268;
+        width:300px;height:300px;
+        border-radius:10px;
+        background: #5a6268;
+        color:#1b1e21;
+        overflow:auto;
+        position: fixed ;
+        right: 650px;
+        top:120px;
+    }
+    .nr::-webkit-scrollbar{
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .yonhu{
+        overflow:auto;
+        position: fixed ;
+        left: 650px;
+        top:50px;
+        size: 13px;
+    }
+    #csx{
+        overflow:auto;
+        position: fixed ;
+        left: 650px;
+        top:430px;
+    }
+    .zz{
+        overflow:auto;
+        position: fixed ;
+        left: 800px;
+        top:70px;
+    }
+    .hh{
+        border:1px solid #5a6268;
+        color:#b9bbbe;
+    }
+    .hc{
+        border:1px solid #5a6268;
+        color:#3f9ae5;
+    }
+    #nr{border:1px solid #5a6268;border-radius:50px}
+    #cit{border:1px solid #5a6268;border-radius:50px}
+</style>
+<body style="background: #4dc0b5">
+<div id="zs">
+    <span class="yonhu">用户互动中心</span>
+    <div class="zz">用户：<span	id="name"></span><span style="color:red"></span></div>
+    <div class='div-height nr' style="" id="cc" >
+    </div>
+    <div id="csx">
+        <form action="javascript:;" method="post">
+            <input type="text" id="nr" placeholder="&nbsp;&nbsp;聊天内容">
+            <input type="submit" value="确认发表"  id="cit" style="background: #b9bbbe;">
+        </form>
+    </div>
+</div>
+</body>
+</html>
+<script src="./jquery.js"></script>
+<script>
+    var ws_server='ws://ii.com:9502/';
+    var ws=new WebSocket(ws_server);
+    //想服务器推送
+    ws.onopen=function(){
+        $('#cit').click(function(){
+            var i =$('#nr').val();
+            $('#nr').val('');
+            ws.send(i);
+        })
+    }
+    //回调服务器所产生的信息
+    ws.onmessage=function(d){
+        var name= JSON.parse(d.data);
+        $("#cc").append('<h5><span class="hc">'+name[1]+'</span>说：<span class="hh">'+name[0]+'</span></h5>');
+        console.log(name[2]);
+        $('#name').text(name[2]);
+        // console.log(d);
+
+    }
+    //是否连接正常
+    console.log(ws);
+</script>
+
