@@ -70,12 +70,13 @@
 </html>
 <script src="./jquery.js"></script>
 <script>
-    var ws_server='ws://ii.com:9502/';
+    var ws_server='ws://ii.com:9503/';
     var ws=new WebSocket(ws_server);
     //想服务器推送
     ws.onopen=function(){
         $('#cit').click(function(){
             var i =$('#nr').val();
+            // var n=i.indexOf('@');
             $('#nr').val('');
             ws.send(i);
         })
@@ -84,10 +85,8 @@
     ws.onmessage=function(d){
         var name= JSON.parse(d.data);
         $("#cc").append('<h5><span class="hc">'+name[1]+'</span>说：<span class="hh">'+name[0]+'</span></h5>');
-        console.log(name[2]);
         $('#name').text(name[2]);
         // console.log(d);
-
     }
     //是否连接正常
     console.log(ws);
